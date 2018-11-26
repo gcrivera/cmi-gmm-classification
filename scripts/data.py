@@ -50,12 +50,17 @@ def extract(num_features):
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
             train_cmi[cmi_class].append(Y)
         else:
+            print 'HERE'
             test_cmi[cmi_class].append(Y)
 
     for i in range(5):
         cmi_class = str(i+1)
-        np.save('data/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
-        np.save('data/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(test_cmi[cmi_class]))
+        try:
+            np.save('data/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
+            np.save('data/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(test_cmi[cmi_class]))
+        except:
+            print cmi_class
+            print len(test_cmi[cmi_class])
 
 def get_file_locations():
     audio_locations = open('data/wav_train.scp')

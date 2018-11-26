@@ -1,2 +1,3 @@
 matlab-reqs
-data/*
+data/
+*.pyc

@@ -1,4 +1,4 @@
-def calculate(utterance):
+def calculate(utterance, norm=None):
     utterance_words = utterance.split()[1:]
 
     utterance_words = list(filter(lambda word: not (word == '((' or word == '))' or word == '=' or word == '+'
@@ -24,14 +24,18 @@ def calculate(utterance):
     max_dialect = max(num_dialect['msa'], num_dialect['non_msa'])
     cmi = 100*((0.5*(num_words - max_dialect) + 0.5*num_switch) / num_words)
 
-    if cmi < 0.2:
-        return '1'
-    elif cmi < 0.4:
-        return '2'
-    elif cmi < 0.6:
-        return '3'
-    elif cmi < 0.8:
-        return '4'
-    elif cmi <= 1.0:
-        return '5'
-    return None
+    if norm == None:
+        return cmi
+    else:
+        cmi = (cmi - norm[1]) / norm[0]
+        if cmi < 0.2:
+            return '1'
+        elif cmi < 0.4:
+            return '2'
+        elif cmi < 0.6:
+            return '3'
+        elif cmi < 0.8:
+            return '4'
+        elif cmi <= 1.0:
+            return '5'
+        return None

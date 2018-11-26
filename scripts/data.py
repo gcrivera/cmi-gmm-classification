@@ -14,6 +14,8 @@ def extract(num_features):
 
     shuffle(transcription_lines)
 
+    max,min = calculate_cmi_norm(transcription_lines)
+
     test_idx = {'1': 14384, '2': 4837, '3': 1763, '4': 531, '5': 40}
 
     train_cmi = {'1': [], '2': [], '3': [], '4': [], '5': []}
@@ -22,7 +24,7 @@ def extract(num_features):
     print('Generating features...')
     for line in tqdm(transcription_lines):
 
-        cmi_class = cmi.calculate(line)
+        cmi_class = cmi.calculate(line, norm=(max,min))
         if cmi_class == None:
             continue
 
@@ -50,7 +52,6 @@ def extract(num_features):
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
             train_cmi[cmi_class].append(Y)
         else:
-            print 'HERE'
             test_cmi[cmi_class].append(Y)
 
     for i in range(5):
@@ -77,6 +78,14 @@ def get_file_locations():
             locations[line_data[0]] = line_data[2]
 
     return locations
+
+def calculate_cmi_norm(transcription_lines):
+    cmis = []
+    for line in transcription_lines:
+        cmi = cmi.calculate(line)
+        cmis.append(cmi)
+
+    return (float(np.amax(cmis)), float(np.amin(cmis)))
 
 def cmvn_slide(X, win_len=300, cmvn=False):
     max_length = np.shape(X)[0]

@@ -55,6 +55,8 @@ def extract(num_features):
 
     for i in range(5):
         cmi_class = str(i+1)
+        print len(train_cmi[cmi_class])
+        print 'BREAK'
         try:
             np.save('data/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
             np.save('data/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(test_cmi[cmi_class]))

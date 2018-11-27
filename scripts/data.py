@@ -82,8 +82,8 @@ def get_file_locations():
 def calculate_cmi_norm(transcription_lines):
     cmis = []
     for line in transcription_lines:
-        cmi = cmi.calculate(line)
-        cmis.append(cmi)
+        cmi_val = cmi.calculate(line)
+        cmis.append(cmi_val)
 
     return (float(np.amax(cmis)), float(np.amin(cmis)))
 

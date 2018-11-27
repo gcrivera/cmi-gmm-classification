@@ -7,6 +7,7 @@ from tqdm import tqdm
 
 def extract(num_features):
     file_locations = get_file_locations()
+    max_length = 8265
 
     transcription_file = open('data/text.bw')
     transcription_lines = transcription_file.readlines()
@@ -49,21 +50,16 @@ def extract(num_features):
         Y = np.concatenate((mfcc, mfcc_delta, mfcc_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 
-        # if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
-        train_cmi[cmi_class].append(Y)
-        # else:
-        #     test_cmi[cmi_class].append(Y)
+        if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
+            train_cmi[cmi_class].append(Y)
+        else:
+            pad_utterance = np.zeros((max_length - Y.shape[0], num_features*3))
+            test_cmi[cmi_class].append(np.concatenate((Y, pad_utterance)))
 
     for i in range(5):
         cmi_class = str(i+1)
-        print len(train_cmi[cmi_class])
-        print 'BREAK'
-        try:
-            np.save('data/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
-            np.save('data/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(test_cmi[cmi_class]))
-        except:
-            print cmi_class
-            # print len(test_cmi[cmi_class])
+        np.save('data/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
+        np.save('data/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(test_cmi[cmi_class]))
 
 def get_file_locations():
     audio_locations = open('data/wav_train.scp')

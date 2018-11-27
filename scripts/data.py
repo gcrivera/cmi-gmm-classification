@@ -59,7 +59,7 @@ def extract(num_features):
     for i in range(5):
         cmi_class = str(i+1)
         np.save('data/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
-        np.save('data/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(test_cmi[cmi_class]))
+        np.save('data/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', test_cmi[cmi_class])
 
 def get_file_locations():
     audio_locations = open('data/wav_train.scp')

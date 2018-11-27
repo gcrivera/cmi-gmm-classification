@@ -3,6 +3,7 @@ addpath(genpath('matlab-reqs'))
 model_path = 'models/512c_13f/';
 
 % Load test data
+disp('Loading data...')
 cmi1_data = readNPY('data/test_cmi1_13f.npy');
 cmi2_data = readNPY('data/test_cmi2_13f.npy');
 cmi3_data = readNPY('data/test_cmi3_13f.npy');
@@ -10,6 +11,7 @@ cmi4_data = readNPY('data/test_cmi4_13f.npy');
 cmi5_data = readNPY('data/test_cmi5_13f.npy');
 all_data = [ cmi1_data cmi2_data cmi3_data cmi4_data cmi5_data ];
 
+disp('Calculating Results')
 models = {load(strcat(model_path, 'cmi1.mat')), load(strcat(model_path, 'cmi2.mat')), load(strcat(model_path, 'cmi3.mat')), load(strcat(model_path, 'cmi4.mat')), load(strcat(model_path, 'cmi5.mat'))};
 
 true_labels = [];

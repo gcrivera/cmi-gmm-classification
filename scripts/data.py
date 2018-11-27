@@ -37,8 +37,7 @@ def extract(num_features):
         file = '_'.join(utterance_data_list[:-2])
         start = float(utterance_data_list[-2])
         stop = float(utterance_data_list[-1])
-        # file_location = file_locations[file]
-        file_location = 'data/ABUDHABI_ABUDHNEWS_ARB_20070206_115800.flac'
+        file_location = file_locations[file]
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step

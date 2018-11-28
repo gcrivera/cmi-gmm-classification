@@ -29,3 +29,5 @@ disp('Adapting CMI4...')
 cmi4_gmm = mapAdapt(num2cell(cmi4_data, 1), ubm, 10, 'm', strcat(model_path, 'cmi4.mat'));
 disp('Adapting CMI5...')
 cmi5_gmm = mapAdapt(num2cell(cmi5_data, 1), ubm, 10, 'm', strcat(model_path, 'cmi5.mat'));
+
+exit

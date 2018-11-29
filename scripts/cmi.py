@@ -28,13 +28,13 @@ def calculate(utterance, norm=None):
         return cmi
     else:
         cmi = (cmi - norm[1]) / norm[0]
-        if cmi < 0.2:
+        if cmi == 0:
             return '1'
-        elif cmi < 0.4:
+        elif cmi < 0.15:
             return '2'
-        elif cmi < 0.6:
+        elif cmi < 0.3:
             return '3'
-        elif cmi < 0.8:
+        elif cmi < 0.45:
             return '4'
         elif cmi <= 1.0:
             return '5'

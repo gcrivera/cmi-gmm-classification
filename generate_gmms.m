@@ -5,11 +5,11 @@ model_path = 'models/1024c_13f/';
 
 % Load training data
 disp('Loading data...')
-cmi1_data = readNPY('data/train_cmi1_13f.npy')';
-cmi2_data = readNPY('data/train_cmi2_13f.npy')';
-cmi3_data = readNPY('data/train_cmi3_13f.npy')';
-cmi4_data = readNPY('data/train_cmi4_13f.npy')';
-cmi5_data = readNPY('data/train_cmi5_13f.npy')';
+cmi1_data = readNPY('data/t2_train_cmi1_13f.npy')';
+cmi2_data = readNPY('data/t2_train_cmi2_13f.npy')';
+cmi3_data = readNPY('data/t2_train_cmi3_13f.npy')';
+cmi4_data = readNPY('data/t2_train_cmi4_13f.npy')';
+cmi5_data = readNPY('data/t2_train_cmi5_13f.npy')';
 
 % all_data = num2cell(cat(1, cmi1_data, cmi2_data, cmi3_data, cmi4_data, cmi5_data)', 1);
 all_data = {cmi1_data; cmi2_data; cmi3_data; cmi4_data; cmi5_data};

@@ -17,7 +17,7 @@ def extract(num_features):
 
     max,min = calculate_cmi_norm(transcription_lines)
 
-    test_idx = {'1': 14384, '2': 4837, '3': 1763, '4': 531, '5': 40}
+    test_idx = {'1': 7900, '2': 4556, '3': 4840, '4': 2552, '5': 1707}
 
     train_cmi = {'1': [], '2': [], '3': [], '4': [], '5': []}
     test_cmi = {'1': [], '2': [], '3': [], '4': [], '5': []}
@@ -47,20 +47,16 @@ def extract(num_features):
         Y = np.concatenate((mfcc, mfcc_delta, mfcc_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 
-        # if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
-        train_cmi[cmi_class].append(Y)
-        # else:
-        #     pad_utterance = np.zeros((max_length - Y.shape[0], num_features*3))
-        #     test_cmi[cmi_class].append(np.concatenate((Y, pad_utterance)))
+        if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
+            train_cmi[cmi_class].append(Y)
+        else:
+            pad_utterance = np.zeros((max_length - Y.shape[0], num_features*3))
+            test_cmi[cmi_class].append(np.concatenate((Y, pad_utterance)))
 
     for i in range(5):
-        print str(i+1)
-        print len(train_cmi[str(i+1)])
-    exit()
-    # for i in range(5):
-    #     cmi_class = str(i+1)
-    #     np.save('data/t2_train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
-    #     np.save('data/t2_test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', test_cmi[cmi_class])
+        cmi_class = str(i+1)
+        np.save('data/t2_train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
+        np.save('data/t2_test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', test_cmi[cmi_class])
 
 def get_file_locations():
     audio_locations = open('data/wav_train.scp')

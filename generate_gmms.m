@@ -1,15 +1,15 @@
 addpath(genpath('matlab-reqs'))
 
-nmix = 1024;
-model_path = 'models/1024c_13f/';
+nmix = 512;
+model_path = 'models/t2_512c_20f/';
 
 % Load training data
 disp('Loading data...')
-cmi1_data = readNPY('data/t2_train_cmi1_13f.npy')';
-cmi2_data = readNPY('data/t2_train_cmi2_13f.npy')';
-cmi3_data = readNPY('data/t2_train_cmi3_13f.npy')';
-cmi4_data = readNPY('data/t2_train_cmi4_13f.npy')';
-cmi5_data = readNPY('data/t2_train_cmi5_13f.npy')';
+cmi1_data = readNPY('data/t2_train_cmi1_20f.npy')';
+cmi2_data = readNPY('data/t2_train_cmi2_20f.npy')';
+cmi3_data = readNPY('data/t2_train_cmi3_20f.npy')';
+cmi4_data = readNPY('data/t2_train_cmi4_20f.npy')';
+cmi5_data = readNPY('data/t2_train_cmi5_20f.npy')';
 
 % all_data = num2cell(cat(1, cmi1_data, cmi2_data, cmi3_data, cmi4_data, cmi5_data)', 1);
 all_data = {cmi1_data; cmi2_data; cmi3_data; cmi4_data; cmi5_data};

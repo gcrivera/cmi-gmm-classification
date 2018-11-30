@@ -42,8 +42,8 @@ def extract(num_features):
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
         mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
-        mfcc_delta = librosa.feature.delta(mfcc, width=2)
-        mfcc_delta_delta = librosa.feature.delta(mfcc, width=2, order=2)
+        mfcc_delta = librosa.feature.delta(mfcc, width=3)
+        mfcc_delta_delta = librosa.feature.delta(mfcc, width=3, order=2)
         Y = np.concatenate((mfcc, mfcc_delta, mfcc_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 

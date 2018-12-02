@@ -41,7 +41,7 @@ def extract(num_features):
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
-        mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
+        mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=1024, hop_length=160, fmin=133, fmax=6955)
         mfcc_delta = librosa.feature.delta(mfcc, width=3)
         mfcc_delta_delta = librosa.feature.delta(mfcc, width=3, order=2)
         Y = np.concatenate((mfcc, mfcc_delta, mfcc_delta_delta))
@@ -55,8 +55,8 @@ def extract(num_features):
 
     for i in range(5):
         cmi_class = str(i+1)
-        np.save('data/t3_train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
-        np.save('data/t3_test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', test_cmi[cmi_class])
+        np.save('data/t4_train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
+        np.save('data/t4_test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', test_cmi[cmi_class])
 
 def get_file_locations():
     audio_locations = open('data/wav_train.scp')

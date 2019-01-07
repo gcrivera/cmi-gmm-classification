@@ -1,22 +1,21 @@
 addpath(genpath('matlab-reqs'))
 
-nmix = 256;
-model_path = 'models/fbank/256c_20f/';
+nmix = 512;
+model_path = 'models/test/';
 
 % Load training data
 disp('Loading data...')
-cmi1_data = readNPY('data/fbank/train_cmi1_20f.npy')';
-cmi2_data = readNPY('data/fbank/train_cmi2_20f.npy')';
-cmi3_data = readNPY('data/fbank/train_cmi3_20f.npy')';
-cmi4_data = readNPY('data/fbank/train_cmi4_20f.npy')';
-cmi5_data = readNPY('data/fbank/train_cmi5_20f.npy')';
+cmi1_data = readNPY('data/mfcc/t2_train_cmi1_20f.npy')';
+cmi2_data = readNPY('data/mfcc/t2_train_cmi2_20f.npy')';
+cmi3_data = readNPY('data/mfcc/t2_train_cmi3_20f.npy')';
+cmi4_data = readNPY('data/mfcc/t2_train_cmi4_20f.npy')';
+cmi5_data = readNPY('data/mfcc/t2_train_cmi5_20f.npy')';
 
 % all_data = num2cell(cat(1, cmi1_data, cmi2_data, cmi3_data, cmi4_data, cmi5_data)', 1);
 all_data = {cmi1_data; cmi2_data; cmi3_data; cmi4_data; cmi5_data};
 % Generate UBM
 disp('Generating UBM...');
 ubm = gmm_em(all_data, nmix, 10, 1, 4, strcat(model_path, 'ubm.mat'));
-
 % Generate GMMs
 
 disp('Adapting CMI1...')

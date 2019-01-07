@@ -42,10 +42,10 @@ def extract(num_features):
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
         # mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
-        fbank = np.log(librosa.feature.melspectrogram(y, sr, n_fft=400, hop_length=160, n_mels=num_features, fmin=133, fmax=6955))
-        fbank_delta = librosa.feature.delta(fbank)
-        fbank_delta_delta = librosa.feature.delta(fbank, order=2)
-        Y = np.concatenate((fbank, fbank_delta, fbank_delta_delta))
+        Y = np.log(librosa.feature.melspectrogram(y, sr, n_fft=400, hop_length=160, n_mels=num_features, fmin=133, fmax=6955))
+        # fbank_delta = librosa.feature.delta(fbank)
+        # fbank_delta_delta = librosa.feature.delta(fbank, order=2)
+        # Y = np.concatenate((fbank, fbank_delta, fbank_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:

@@ -1,7 +1,7 @@
 addpath(genpath('matlab-reqs'))
 
-nmix = 512;
-model_path = 'models/fbank/512c_20f/';
+nmix = 256;
+model_path = 'models/fbank/256c_20f/';
 
 % Load training data
 disp('Loading data...')

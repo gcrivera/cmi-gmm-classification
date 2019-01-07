@@ -42,10 +42,10 @@ def extract(num_features):
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
         # mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
-        Y = np.log(librosa.feature.melspectrogram(y, sr, n_fft=400, hop_length=160, n_mels=num_features, fmin=133, fmax=6955))
-        # fbank_delta = librosa.feature.delta(fbank)
-        # fbank_delta_delta = librosa.feature.delta(fbank, order=2)
-        # Y = np.concatenate((fbank, fbank_delta, fbank_delta_delta))
+        spec = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
+        spec_delta = librosa.feature.delta(spec)
+        spec_delta_delta = librosa.feature.delta(spec, order=2)
+        Y = np.concatenate((spec, spec_delta, spec_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
@@ -56,8 +56,8 @@ def extract(num_features):
 
     for i in range(5):
         cmi_class = str(i+1)
-        np.save('data/fbank/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
-        np.save('data/fbank/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', test_cmi[cmi_class])
+        np.save('data/spec/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
+        np.save('data/spec/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', test_cmi[cmi_class])
 
 def get_file_locations():
     audio_locations = open('data/wav_train.scp')

@@ -47,11 +47,13 @@ def extract(num_features):
         spec_delta_delta = librosa.feature.delta(spec, order=2)
         Y = np.concatenate((spec, spec_delta, spec_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
+        print Y.size()
+        exit()
 
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
             train_cmi[cmi_class].append(Y)
         else:
-            pad_utterance = np.zeros((max_length - Y.shape[0], num_features)) # *3
+            pad_utterance = np.zeros((max_length - Y.shape[0], )) # num_features*3, Take out *3 if not using deltas
             test_cmi[cmi_class].append(np.concatenate((Y, pad_utterance)))
 
     for i in range(5):

@@ -1,0 +1,5 @@
+export AFS_HOME=/afs/csail.mit.edu/u/g/gcrivera
+export NFS_HOME=/data/sls/r/u/gcrivera
+export HOME=/data/sls/r/u/gcrivera
+alias scratch="cd /data/sls/scratch/gcrivera"
+source /afs/csail.mit.edu/system/common/etc/zsh/zprofile.csail

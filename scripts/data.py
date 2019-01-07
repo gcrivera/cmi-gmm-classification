@@ -41,7 +41,7 @@ def extract(num_features):
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
-        mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=1024, hop_length=160, fmin=133, fmax=6955)
+        mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
         mfcc_delta = librosa.feature.delta(mfcc)
         mfcc_delta_delta = librosa.feature.delta(mfcc, order=2)
         Y = np.concatenate((mfcc, mfcc_delta, mfcc_delta_delta))

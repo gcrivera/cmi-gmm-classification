@@ -1,14 +1,14 @@
 addpath(genpath('matlab-reqs'))
 
-model_path = 'models/t2_512c_20f/';
+model_path = 'models/t4_512c_20f/';
 
 % Load test data
 disp('Loading data...')
-cmi1_data = readNPY('data/test_cmi1_20f.npy');
-cmi2_data = readNPY('data/test_cmi2_20f.npy');
-cmi3_data = readNPY('data/test_cmi3_20f.npy');
-cmi4_data = readNPY('data/test_cmi4_20f.npy');
-cmi5_data = readNPY('data/test_cmi5_20f.npy');
+cmi1_data = readNPY('data/t4_test_cmi1_20f.npy');
+cmi2_data = readNPY('data/t4_test_cmi2_20f.npy');
+cmi3_data = readNPY('data/t4_test_cmi3_20f.npy');
+cmi4_data = readNPY('data/t4_test_cmi4_20f.npy');
+cmi5_data = readNPY('data/t4_test_cmi5_20f.npy');
 all_data = { cmi1_data; cmi2_data; cmi3_data; cmi4_data; cmi5_data };
 
 ubm = load(strcat(model_path, 'ubm.mat'));

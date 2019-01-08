@@ -1,5 +1,6 @@
 import cmi
 import librosa
+import math
 import numpy as np
 import soundfile as sf
 from random import shuffle
@@ -62,7 +63,7 @@ def extract(num_features, phoneme_feat=False):
             if diff % 2 == 0:
                 y_phoneme = np.pad(y_phoneme, (diff/2.0,),  'constant', constant_values=(0,))
             else:
-                y_phoneme = np.pad(y_phoneme, (floor(diff/2.0), floor(diff/2.0) + 1),  'constant', constant_values=(0, 0))
+                y_phoneme = np.pad(y_phoneme, (math.floor(diff/2.0), math.floor(diff/2.0) + 1),  'constant', constant_values=(0, 0))
 
         print Y.shape
         print y_phoneme.shape

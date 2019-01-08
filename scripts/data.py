@@ -58,6 +58,7 @@ def extract(num_features, phoneme_feat=False):
         # if so, then create one hot of phoneme features and concatenate,
         # otherwise gonna have to step through time stamps and match them up with
         # the 25 ms sliding window
+        print(utterance_data)
         print('phoneme shape')
         print(y_phoneme.shape)
         print('Y shape')

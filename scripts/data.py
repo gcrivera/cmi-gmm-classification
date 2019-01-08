@@ -108,7 +108,7 @@ def get_phonemes():
             new_recording = True
         else:
             phoneme_data = line.split()
-            phoneme_dict[rec_name].append((phoneme_data[2], (int(phoneme_data[0][:-5]), int(phoneme_data[1][:-5]))))
+            phoneme_dict[rec_name].append((phoneme_data[2], (float(phoneme_data[0][:-5]), float(phoneme_data[1][:-5]))))
 
     return phoneme_dict
 

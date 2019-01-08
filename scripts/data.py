@@ -65,7 +65,7 @@ def extract(num_features, phoneme_feat=False):
             else:
                 y_phoneme = np.pad(y_phoneme, ((int(diff/2), int(diff/2) + 1), (0,0)),  'constant', constant_values=(0,0))
 
-        Y = np.concatenate((Y, y_phoneme))
+        Y = np.concatenate((Y, y_phoneme), axis=1)
 
         print Y.shape
         exit()

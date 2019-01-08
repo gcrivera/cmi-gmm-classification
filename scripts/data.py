@@ -44,7 +44,7 @@ def extract(num_features, phoneme_feat=False):
         if phoneme_feat:
             phonemes = phoneme_data[utterance_data]
             # TODO: need to change this fn
-            # y_phoneme = get_phoneme_feature(phonemes)
+            y_phoneme = get_phoneme_feature(phonemes)
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
@@ -58,9 +58,9 @@ def extract(num_features, phoneme_feat=False):
         # if so, then create one hot of phoneme features and concatenate,
         # otherwise gonna have to step through time stamps and match them up with
         # the 25 ms sliding window
-        print('Length of phonemes')
-        print(len(phonemes))
-        print('Shape of features')
+        print('phoneme length')
+        print(len(y_phoneme))
+        print('Y shape')
         print(Y.shape)
         exit()
         Y = cmvn_slide(Y, cmvn='m').T
@@ -108,7 +108,7 @@ def get_phonemes():
             new_recording = True
         else:
             phoneme_data = line.split()
-            phoneme_dict[rec_name].append((phoneme_data[2], (phoneme_data[0], phoneme_data[1])))
+            phoneme_dict[rec_name].append((phoneme_data[2], (phoneme_data[0][:-5], phoneme_data[1][:-5])))
 
     return phoneme_dict
 
@@ -122,12 +122,22 @@ def get_phoneme_feature(phonemes):
      'j:': 48, 'd_:': 49, 'z:': 50, 't1': 51, 't1:': 52, 'r:': 53, 'tS_': 54, 'J:': 55,
      'x': 56, 'k:': 57, 'dz': 58, 'F': 59, 'S:': 60}
 
-    feature = np.zeros(60)
-    for phoneme_data in phonemes:
-        phoneme = phoneme_data[0]
-        feature[phoneme_feature_locations[phoneme]] = 1
+    features = []
+    start = 0
+    end = phonemes[-1][1][1]
+    while start < end:
+        feature = np.zeros(60)
+        for phoneme in phonemes:
+            phone_start = phoneme[1][0]
+            phone_end = phoneme[1][1]
+            if (phone_start >= start and phone_start <= start+25)
+                or (phone_end >= start and phone_end <= start+25)
+                or (phone_start <= start and phone_end >= start+25):
+                feature[phoneme_feature_locations[phoneme[0]]] = 1
+        features.append(feature)
+        start += 10
 
-    return feature
+    return np.appary(features)
 
 def calculate_cmi_norm(transcription_lines):
     cmis = []

@@ -48,8 +48,8 @@ def extract(num_features, phoneme_feat=False):
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
-        Y = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
-        # Y = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
+        # mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
+        Y = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
         # spec_delta = librosa.feature.delta(spec)
         # spec_delta_delta = librosa.feature.delta(spec, order=2)
         # Y = np.concatenate((spec, spec_delta)) #, spec_delta_delta))
@@ -135,10 +135,11 @@ def get_phoneme_feature(phonemes):
         for phoneme in phonemes:
             phone_start = phoneme[1][0]
             phone_end = phoneme[1][1]
-            if (phone_start >= start and phone_start <= start+25) or (phone_end >= start and phone_end <= start+25) or (phone_start <= start and phone_end >= start+25):
+            # if (phone_start >= start and phone_start <= start+25) or (phone_end >= start and phone_end <= start+25) or (phone_start <= start and phone_end >= start+25):
+            if start >= phone_start and start <= phone_end:
                 feature[phoneme_feature_locations[phoneme[0]]] = 1
         features.append(feature)
-        start += 10
+        start += 1
 
     return np.array(features)
 

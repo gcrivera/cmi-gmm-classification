@@ -130,9 +130,7 @@ def get_phoneme_feature(phonemes):
         for phoneme in phonemes:
             phone_start = phoneme[1][0]
             phone_end = phoneme[1][1]
-            if (phone_start >= start and phone_start <= start+25)
-                or (phone_end >= start and phone_end <= start+25)
-                or (phone_start <= start and phone_end >= start+25):
+            if (phone_start >= start and phone_start <= start+25) or (phone_end >= start and phone_end <= start+25) or (phone_start <= start and phone_end >= start+25):
                 feature[phoneme_feature_locations[phoneme[0]]] = 1
         features.append(feature)
         start += 10

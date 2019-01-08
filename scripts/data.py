@@ -59,7 +59,7 @@ def extract(num_features, phoneme_feat=False):
 
         diff = Y.shape[0] - y_phoneme.shape[0]
         if diff != 0:
-            if diff % 2 = 0:
+            if diff % 2 == 0:
                 y_phoneme = np.pad(y_phoneme, (diff/2.0,),  'constant', constant_values=(0,))
             else:
                 y_phoneme = np.pad(y_phoneme, (floor(diff/2.0), floor(diff/2.0) + 1),  'constant', constant_values=(0, 0))

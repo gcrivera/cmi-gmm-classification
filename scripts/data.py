@@ -43,7 +43,8 @@ def extract(num_features, phoneme_feat=False):
 
         if phoneme_feat:
             phonemes = phoneme_data[utterance_data]
-            y_phoneme = get_phoneme_feature(phonemes)
+            # TODO: need to change this fn
+            # y_phoneme = get_phoneme_feature(phonemes)
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
@@ -52,6 +53,16 @@ def extract(num_features, phoneme_feat=False):
         # spec_delta = librosa.feature.delta(spec)
         # spec_delta_delta = librosa.feature.delta(spec, order=2)
         # Y = np.concatenate((spec, spec_delta)) #, spec_delta_delta))
+
+        # TODO: check if len(phonemes) and Y.shape are the same
+        # if so, then create one hot of phoneme features and concatenate,
+        # otherwise gonna have to step through time stamps and match them up with
+        # the 25 ms sliding window
+        print('Length of phonemes')
+        print(len(phonemes))
+        print('Shape of features')
+        print(Y.shape)
+        exit()
         Y = cmvn_slide(Y, cmvn='m').T
 
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:

@@ -48,7 +48,7 @@ def extract(num_features, phoneme_feat=False):
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
         # mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
-        spec = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
+        Y = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
         # spec_delta = librosa.feature.delta(spec)
         # spec_delta_delta = librosa.feature.delta(spec, order=2)
         # Y = np.concatenate((spec, spec_delta)) #, spec_delta_delta))

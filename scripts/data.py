@@ -5,8 +5,10 @@ import soundfile as sf
 from random import shuffle
 from tqdm import tqdm
 
-def extract(num_features):
+def extract(num_features, phoneme_feat=False):
     file_locations = get_file_locations()
+    if phoneme_feat:
+        phoneme_data = get_phonemes()
     max_length = 8265
 
     transcription_file = open('data/text.bw')
@@ -32,26 +34,24 @@ def extract(num_features):
         line_data = line.split()
         utterance_data = line_data[0]
         utterance_words = line_data[1:]
-        print utterance_data
-        exit()
 
         utterance_data_list = utterance_data.split('_')
         file = '_'.join(utterance_data_list[:-2])
         start = float(utterance_data_list[-2])
         stop = float(utterance_data_list[-1])
         file_location = file_locations[file]
-        print file
-        print file_location
-        print start
-        print stop
+
+        if phoneme_feat:
+            phonemes = phoneme_data[utterance_data]
+            y_phoneme = get_phoneme_feature(phonemes)
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
         # mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
         spec = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
-        spec_delta = librosa.feature.delta(spec)
+        # spec_delta = librosa.feature.delta(spec)
         # spec_delta_delta = librosa.feature.delta(spec, order=2)
-        Y = np.concatenate((spec, spec_delta)) #, spec_delta_delta))
+        # Y = np.concatenate((spec, spec_delta)) #, spec_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
@@ -90,16 +90,33 @@ def get_phonemes():
     print('Loading phoneme data...')
     for line in tqdm(phoneme_lines):
         if new_recording:
-            rec_name = line[:-5]
+            rec_name = line[:-7]
             phoneme_dict[rec_name] = []
             new_recording = False
-        elif line == '.':
+        elif line.startswith('.'):
             new_recording = True
         else:
             phoneme_data = line.split()
             phoneme_dict[rec_name].append((phoneme_data[2], (phoneme_data[0], phoneme_data[1])))
 
     return phoneme_dict
+
+def get_phoneme_feature(phonemes):
+    phoneme_feature_locations = {'pau': 0, 'v': 1, 'O': 2, 'n': 3, 'e:': 4, 'k': 5,
+     'E': 6, 'int': 7, 's': 8, 'o': 9, 'm': 10, 't': 11, 'l': 12, 'd': 13, 'u': 14,
+     'A:': 15, 'J': 16, 'h': 17,'o:': 18, 'i': 19, 'S': 20, 'z': 21, 'j': 22, 'i:':23,
+     'd_': 24, 'r': 25, 'g': 26, '_2': 27, 'b': 28, 'u:': 29, 'y': 30, 'spk': 31,
+     'p': 32, 'h1': 33, 'n:': 34, 'f': 35, ':2': 36, 'tS': 37, 'N': 38, 'm:': 39,
+     'y:': 40, 'ts_': 41, 'l:': 42, 'b:': 43, 's:': 44, 'ts': 45, 'Z': 46, 't:': 47,
+     'j:': 48, 'd_:': 49, 'z:': 50, 't1': 51, 't1:': 52, 'r:': 53, 'tS_': 54, 'J:': 55,
+     'x': 56, 'k:': 57, 'dz': 58, 'F': 59, 'S:': 60}
+
+    feature = np.zeros(60)
+    for phoneme_data in phonemes:
+        phoneme = phoneme_data[0]
+        feature[phoneme_feature_locations[phoneme]] = 1
+
+    return feature
 
 def calculate_cmi_norm(transcription_lines):
     cmis = []

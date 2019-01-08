@@ -108,8 +108,13 @@ def get_phonemes():
             new_recording = True
         else:
             phoneme_data = line.split()
+            if phoneme_data[0][:-5] == '':
+                start = 0.0
+            else:
+                start = float(phoneme_data[0][:-5])
+            end = float(phoneme_data[1][:-5])
             try:
-                phoneme_dict[rec_name].append((phoneme_data[2], (float(phoneme_data[0][:-5]), float(phoneme_data[1][:-5]))))
+                phoneme_dict[rec_name].append((phoneme_data[2], (start, end)))
             except:
                 print(phoneme_data[0][:-5])
                 print(phoneme_data[1][:-5])

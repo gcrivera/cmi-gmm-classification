@@ -127,6 +127,8 @@ def get_phoneme_feature(phonemes):
     end = phonemes[-1][1][1]
     print('End')
     print(end)
+    print(type(end))
+    exit()
     while start < end:
         print(start)
         feature = np.zeros(60)

@@ -45,7 +45,7 @@ def extract(num_features):
         spec = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
         spec_delta = librosa.feature.delta(spec)
         # spec_delta_delta = librosa.feature.delta(spec, order=2)
-        Y = np.concatenate((spec, spec_delta) #, spec_delta_delta))
+        Y = np.concatenate((spec, spec_delta)) #, spec_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:

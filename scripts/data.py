@@ -108,7 +108,7 @@ def get_phonemes():
             new_recording = True
         else:
             phoneme_data = line.split()
-            phoneme_dict[rec_name].append((phoneme_data[2], (phoneme_data[0][:-5], phoneme_data[1][:-5])))
+            phoneme_dict[rec_name].append((phoneme_data[2], (int(phoneme_data[0][:-5]), int(phoneme_data[1][:-5]))))
 
     return phoneme_dict
 
@@ -125,12 +125,7 @@ def get_phoneme_feature(phonemes):
     features = []
     start = 0
     end = phonemes[-1][1][1]
-    print('End')
-    print(end)
-    print(type(end))
-    exit()
     while start < end:
-        print(start)
         feature = np.zeros(60)
         for phoneme in phonemes:
             phone_start = phoneme[1][0]

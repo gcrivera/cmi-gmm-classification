@@ -32,12 +32,18 @@ def extract(num_features):
         line_data = line.split()
         utterance_data = line_data[0]
         utterance_words = line_data[1:]
+        print utterance_data
+        exit()
 
         utterance_data_list = utterance_data.split('_')
         file = '_'.join(utterance_data_list[:-2])
         start = float(utterance_data_list[-2])
         stop = float(utterance_data_list[-1])
         file_location = file_locations[file]
+        print file
+        print file_location
+        print start
+        print stop
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
@@ -72,6 +78,28 @@ def get_file_locations():
             locations[line_data[0]] = line_data[2]
 
     return locations
+
+def get_phonemes():
+    phonemes = open('data/phoneme_HU.mlf')
+    phoneme_lines = phonemes.readlines()
+    phonemes.close()
+
+    phoneme_dict = {}
+    new_recording = True
+    rec_name = ''
+    print('Loading phoneme data...')
+    for line in tqdm(phoneme_lines):
+        if new_recording:
+            rec_name = line[:-5]
+            phoneme_dict[rec_name] = []
+            new_recording = False
+        elif line == '.':
+            new_recording = True
+        else:
+            phoneme_data = line.split()
+            phoneme_dict[rec_name].append((phoneme_data[2], (phoneme_data[0], phoneme_data[1])))
+
+    return phoneme_dict
 
 def calculate_cmi_norm(transcription_lines):
     cmis = []

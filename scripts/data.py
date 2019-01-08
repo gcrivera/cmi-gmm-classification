@@ -61,9 +61,9 @@ def extract(num_features, phoneme_feat=False):
         diff = Y.shape[0] - y_phoneme.shape[0]
         if diff != 0:
             if diff % 2 == 0:
-                y_phoneme = np.pad(y_phoneme, ((int(diff/2),), (0,0)),  'constant', constant_values=(0,0))
+                y_phoneme = np.pad(y_phoneme, ((int(diff/2),int(diff/2)), (0,0)), 'constant', constant_values=(0,0))
             else:
-                y_phoneme = np.pad(y_phoneme, ((int(math.floor(diff/2)), int(math.floor(diff/2) + 1)), (0,0)),  'constant', constant_values=(0,0))
+                y_phoneme = np.pad(y_phoneme, ((int(diff/2), int(diff/2) + 1), (0,0)),  'constant', constant_values=(0,0))
 
         print Y.shape
         print y_phoneme.shape

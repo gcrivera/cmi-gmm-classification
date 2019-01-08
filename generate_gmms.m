@@ -1,7 +1,7 @@
 addpath(genpath('matlab-reqs'))
 
-nmix = 256;
-model_path = 'models/spec/256c_20f';
+nmix = 128;
+model_path = 'models/spec/128c/';
 
 % Load training data
 disp('Loading data...')

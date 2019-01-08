@@ -43,7 +43,6 @@ def extract(num_features, phoneme_feat=False):
 
         if phoneme_feat:
             phonemes = phoneme_data[utterance_data]
-            # TODO: need to change this fn
             y_phoneme = get_phoneme_feature(phonemes)
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
@@ -54,17 +53,20 @@ def extract(num_features, phoneme_feat=False):
         # spec_delta_delta = librosa.feature.delta(spec, order=2)
         # Y = np.concatenate((spec, spec_delta)) #, spec_delta_delta))
 
-        # TODO: check if len(phonemes) and Y.shape are the same
-        # if so, then create one hot of phoneme features and concatenate,
-        # otherwise gonna have to step through time stamps and match them up with
-        # the 25 ms sliding window
-        print(utterance_data)
-        print('phoneme shape')
-        print(y_phoneme.shape)
-        print('Y shape')
-        print(Y.shape)
-        exit()
+        # TODO: pad y_phoneme with zeros so dimensions match, then after the transpose
+        # concatenate properly
         Y = cmvn_slide(Y, cmvn='m').T
+
+        diff = Y.shape[0] - y_phoneme.shape[0]
+        if diff != 0:
+            if diff % 2 = 0:
+                y_phoneme = np.pad(y_phoneme, (diff/2.0,),  'constant', constant_values=(0,))
+            else:
+                y_phoneme = np.pad(y_phoneme, (floor(diff/2.0), floor(diff/2.0) + 1),  'constant', constant_values=(0, 0))
+
+        print Y.shape
+        print y_phoneme.shape
+        exit()
 
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
             train_cmi[cmi_class].append(Y)
@@ -136,7 +138,6 @@ def get_phoneme_feature(phonemes):
         for phoneme in phonemes:
             phone_start = phoneme[1][0]
             phone_end = phoneme[1][1]
-            print(start)
             if start >= phone_start and start <= phone_end:
                 feature[phoneme_feature_locations[phoneme[0]]] = 1
         features.append(feature)

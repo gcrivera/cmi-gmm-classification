@@ -135,7 +135,7 @@ def get_phoneme_feature(phonemes):
         features.append(feature)
         start += 10
 
-    return np.appary(features)
+    return np.array(features)
 
 def calculate_cmi_norm(transcription_lines):
     cmis = []

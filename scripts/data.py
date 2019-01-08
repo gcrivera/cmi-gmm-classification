@@ -48,14 +48,11 @@ def extract(num_features, phoneme_feat=False):
 
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
-        # mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
-        Y = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
-        # spec_delta = librosa.feature.delta(spec)
-        # spec_delta_delta = librosa.feature.delta(spec, order=2)
-        # Y = np.concatenate((spec, spec_delta)) #, spec_delta_delta))
-
-        # TODO: pad y_phoneme with zeros so dimensions match, then after the transpose
-        # concatenate properly
+        mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
+        # Y = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
+        mfcc_delta = librosa.feature.delta(mfcc)
+        mfcc_delta_delta = librosa.feature.delta(mfcc, order=2)
+        Y = np.concatenate((mfcc, mfcc_delta, mfcc_delta_delta)) #, spec_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 
         diff = Y.shape[0] - y_phoneme.shape[0]
@@ -67,9 +64,6 @@ def extract(num_features, phoneme_feat=False):
 
         Y = np.concatenate((Y, y_phoneme), axis=1)
 
-        print Y.shape
-        exit()
-
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
             train_cmi[cmi_class].append(Y)
         else:
@@ -78,8 +72,8 @@ def extract(num_features, phoneme_feat=False):
 
     for i in range(5):
         cmi_class = str(i+1)
-        np.save('data/spec/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
-        np.save('data/spec/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', test_cmi[cmi_class])
+        np.save('data/mfcc_phoneme/train_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', np.concatenate(train_cmi[cmi_class]))
+        np.save('data/mfcc_phoneme/test_cmi' + cmi_class + '_' + str(num_features) + 'f.npy', test_cmi[cmi_class])
 
 def get_file_locations():
     audio_locations = open('data/wav_train.scp')

@@ -1,15 +1,15 @@
 addpath(genpath('matlab-reqs'))
 
 nmix = 128;
-model_path = 'models/spec/128c/';
+model_path = 'models/mfcc_phoneme/128c/';
 
 % Load training data
 disp('Loading data...')
-cmi1_data = double(readNPY('data/spec/train_cmi1_20f.npy')');
-cmi2_data = double(readNPY('data/spec/train_cmi2_20f.npy')');
-cmi3_data = double(readNPY('data/spec/train_cmi3_20f.npy')');
-cmi4_data = double(readNPY('data/spec/train_cmi4_20f.npy')');
-cmi5_data = double(readNPY('data/spec/train_cmi5_20f.npy')');
+cmi1_data = double(readNPY('data/mfcc_phoneme/train_cmi1_20f.npy')');
+cmi2_data = double(readNPY('data/mfcc_phoneme/train_cmi2_20f.npy')');
+cmi3_data = double(readNPY('data/mfcc_phoneme/train_cmi3_20f.npy')');
+cmi4_data = double(readNPY('data/mfcc_phoneme/train_cmi4_20f.npy')');
+cmi5_data = double(readNPY('data/mfcc_phoneme/train_cmi5_20f.npy')');
 
 % all_data = num2cell(cat(1, cmi1_data, cmi2_data, cmi3_data, cmi4_data, cmi5_data)', 1);
 all_data = {cmi1_data; cmi2_data; cmi3_data; cmi4_data; cmi5_data};

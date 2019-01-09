@@ -49,20 +49,27 @@ def extract(num_features, phoneme_feat=False):
         y, sr = sf.read(file_location, start=int(16000*start), stop=int(16000*stop)+1)
         # each column represents 0.01 second step
         mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
-        # Y = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
+        spec = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
         mfcc_delta = librosa.feature.delta(mfcc)
         mfcc_delta_delta = librosa.feature.delta(mfcc, order=2)
-        Y = np.concatenate((mfcc, mfcc_delta, mfcc_delta_delta)) #, spec_delta_delta))
+        # TODO: check to make sure spec and mfcc dimensions match
+        print('Spec shape')
+        print(spec.shape)
+        print('MFCC shape')
+        print(mfcc.shape)
+        exit()
+        Y = np.concatenate((spec, mfcc, mfcc_delta, mfcc_delta_delta)) #, spec_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 
-        diff = Y.shape[0] - y_phoneme.shape[0]
-        if diff != 0:
-            if diff % 2 == 0:
-                y_phoneme = np.pad(y_phoneme, ((int(diff/2),int(diff/2)), (0,0)), 'constant', constant_values=(0,0))
-            else:
-                y_phoneme = np.pad(y_phoneme, ((int(diff/2), int(diff/2) + 1), (0,0)),  'constant', constant_values=(0,0))
+        if phoneme_feat:
+            diff = Y.shape[0] - y_phoneme.shape[0]
+            if diff != 0:
+                if diff % 2 == 0:
+                    y_phoneme = np.pad(y_phoneme, ((int(diff/2),int(diff/2)), (0,0)), 'constant', constant_values=(0,0))
+                else:
+                    y_phoneme = np.pad(y_phoneme, ((int(diff/2), int(diff/2) + 1), (0,0)),  'constant', constant_values=(0,0))
 
-        Y = np.concatenate((Y, y_phoneme), axis=1)
+            Y = np.concatenate((Y, y_phoneme), axis=1)
 
         if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
             train_cmi[cmi_class].append(Y)

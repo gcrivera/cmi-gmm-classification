@@ -52,12 +52,6 @@ def extract(num_features, phoneme_feat=False):
         spec = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
         mfcc_delta = librosa.feature.delta(mfcc)
         mfcc_delta_delta = librosa.feature.delta(mfcc, order=2)
-        # TODO: check to make sure spec and mfcc dimensions match
-        print('Spec shape')
-        print(spec.shape)
-        print('MFCC shape')
-        print(mfcc.shape)
-        exit()
         Y = np.concatenate((spec, mfcc, mfcc_delta, mfcc_delta_delta)) #, spec_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 

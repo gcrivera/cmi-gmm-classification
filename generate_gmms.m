@@ -1,7 +1,7 @@
 addpath(genpath('matlab-reqs'))
 
-nmix = 128;
-model_path = 'models/mfcc_phoneme/128c/';
+nmix = 256;
+model_path = 'models/mfcc_phoneme/256c/';
 
 % Load training data
 disp('Loading data...')

@@ -1,14 +1,14 @@
 addpath(genpath('matlab-reqs'))
 
-model_path = 'models/mfcc_spec/';
+model_path = 'models/mfcc/';
 
 % Load test data
 disp('Loading data...')
-cmi1_data = readNPY('data/mfcc_spec/test_cmi1_20f.npy');
-cmi2_data = readNPY('data/mfcc_spec/test_cmi2_20f.npy');
-cmi3_data = readNPY('data/mfcc_spec/test_cmi3_20f.npy');
-cmi4_data = readNPY('data/mfcc_spec/test_cmi4_20f.npy');
-cmi5_data = readNPY('data/mfcc_spec/test_cmi5_20f.npy');
+cmi1_data = readNPY('data/phoneme/test_cmi1.npy');
+cmi2_data = readNPY('data/phoneme/test_cmi2.npy');
+cmi3_data = readNPY('data/phoneme/test_cmi3.npy');
+cmi4_data = readNPY('data/phoneme/test_cmi4.npy');
+cmi5_data = readNPY('data/phoneme/test_cmi5.npy');
 all_data = { cmi1_data; cmi2_data; cmi3_data; cmi4_data; cmi5_data };
 
 ubm = load(strcat(model_path, 'ubm.mat'));
@@ -30,8 +30,7 @@ for i = 1:5
     data_size = size(data);
     tests = {};
     for j = 1:data_size(1)
-        utterance_data = squeeze(data(j,:,:));
-        utterance_data = utterance_data(any(utterance_data,2),:);
+        utterance_data = squeeze(data(j,:));
         tests{end+1} = utterance_data';
     end
 

@@ -90,8 +90,8 @@ def extract(num_features, phoneme_feat=False):
         mfcc = librosa.feature.mfcc(y, sr, n_mfcc=num_features, n_fft=400, hop_length=160, fmin=133, fmax=6955)
         # spec = np.abs(librosa.core.stft(y, n_fft=400, hop_length=160))
         mfcc_delta = librosa.feature.delta(mfcc)
-        # mfcc_delta_delta = librosa.feature.delta(mfcc, order=2)
-        Y = np.concatenate((mfcc, mfcc_delta))
+        mfcc_delta_delta = librosa.feature.delta(mfcc, order=2)
+        Y = np.concatenate((mfcc, mfcc_delta, mfcc_delta_delta))
         Y = cmvn_slide(Y, cmvn='m').T
 
         if phoneme_feat:

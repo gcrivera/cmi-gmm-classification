@@ -42,8 +42,8 @@ def extract_phoneme_alone():
 
     for i in range(5):
         cmi_class = str(i+1)
-        np.save('data/phoneme/train_cmi' + cmi_class + '.npy', np.concatenate(train_cmi[cmi_class]))
-        np.save('data/phoneme/test_cmi' + cmi_class + '.npy', np.concatenate(test_cmi[cmi_class]))
+        np.save('data/phoneme/train_cmi' + cmi_class + '.npy', np.array(train_cmi[cmi_class]))
+        np.save('data/phoneme/test_cmi' + cmi_class + '.npy', np.array(test_cmi[cmi_class]))
 
 def extract(num_features, phoneme_feat=False):
     file_locations = get_file_locations()

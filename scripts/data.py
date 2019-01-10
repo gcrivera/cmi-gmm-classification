@@ -42,8 +42,8 @@ def extract_phoneme_alone():
 
     for i in range(5):
         cmi_class = str(i+1)
-        np.save('data/phoneme/train_cmi' + cmi_class + '.npy', np.array(train_cmi[cmi_class]))
-        np.save('data/phoneme/test_cmi' + cmi_class + '.npy', np.array(test_cmi[cmi_class]))
+        np.save('data/phoneme_count/train_cmi' + cmi_class + '.npy', np.array(train_cmi[cmi_class]))
+        np.save('data/phoneme_count/test_cmi' + cmi_class + '.npy', np.array(test_cmi[cmi_class]))
 
 def extract(num_features, phoneme_feat=False):
     file_locations = get_file_locations()
@@ -168,7 +168,7 @@ def get_phoneme_alone_feature(phonemes):
 
     feature = np.zeros(61)
     for phoneme in phonemes:
-        feature[phoneme_feature_locations[phoneme[0]]] = 1
+        feature[phoneme_feature_locations[phoneme[0]]] += 1
 
     return feature
 

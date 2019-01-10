@@ -10,4 +10,5 @@ parser.add_argument('--phoneme', action='store_true', help='Features will includ
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    data.extract(args.num_features, args.phoneme)
+    data.extract_phoneme_alone()
+    # data.extract(args.num_features, args.phoneme)

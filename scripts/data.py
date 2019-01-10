@@ -6,6 +6,45 @@ import soundfile as sf
 from random import shuffle
 from tqdm import tqdm
 
+def extract_phoneme_alone():
+    phoneme_data = get_phonemes()
+
+    transcription_file = open('data/text.bw')
+    transcription_lines = transcription_file.readlines()
+    transcription_file.close()
+
+    shuffle(transcription_lines)
+
+    max,min = calculate_cmi_norm(transcription_lines)
+
+    test_idx = {'1': 7900, '2': 4556, '3': 4840, '4': 2552, '5': 1707}
+
+    train_cmi = {'1': [], '2': [], '3': [], '4': [], '5': []}
+    test_cmi = {'1': [], '2': [], '3': [], '4': [], '5': []}
+
+    print('Generating features...')
+    for line in tqdm(transcription_lines):
+        cmi_class = cmi.calculate(line, norm=(max,min))
+        if cmi_class == None:
+            continue
+
+        line_data = line.split()
+        utterance_data = line_data[0]
+        utterance_words = line_data[1:]
+        phonemes = phoneme_data[utterance_data]
+
+        Y = get_phoneme_alone_feature(phonemes)
+
+        if len(train_cmi[cmi_class]) < test_idx[cmi_class]:
+            train_cmi[cmi_class].append(Y)
+        else:
+            test_cmi[cmi_class].append(Y)
+
+    for i in range(5):
+        cmi_class = str(i+1)
+        np.save('data/phoneme/train_cmi' + cmi_class + '.npy', np.concatenate(train_cmi[cmi_class]))
+        np.save('data/phoneme/test_cmi' + cmi_class + '.npy', np.concatenate(test_cmi[cmi_class]))
+
 def extract(num_features, phoneme_feat=False):
     file_locations = get_file_locations()
     if phoneme_feat:
@@ -116,6 +155,22 @@ def get_phonemes():
             phoneme_dict[rec_name].append((phoneme_data[2], (start, end)))
 
     return phoneme_dict
+
+def get_phoneme_alone_feature(phonemes):
+    phoneme_feature_locations = {'pau': 0, 'v': 1, 'O': 2, 'n': 3, 'e:': 4, 'k': 5,
+     'E': 6, 'int': 7, 's': 8, 'o': 9, 'm': 10, 't': 11, 'l': 12, 'd': 13, 'u': 14,
+     'A:': 15, 'J': 16, 'h': 17,'o:': 18, 'i': 19, 'S': 20, 'z': 21, 'j': 22, 'i:':23,
+     'd_': 24, 'r': 25, 'g': 26, '_2': 27, 'b': 28, 'u:': 29, 'y': 30, 'spk': 31,
+     'p': 32, 'h1': 33, 'n:': 34, 'f': 35, ':2': 36, 'tS': 37, 'N': 38, 'm:': 39,
+     'y:': 40, 'ts_': 41, 'l:': 42, 'b:': 43, 's:': 44, 'ts': 45, 'Z': 46, 't:': 47,
+     'j:': 48, 'd_:': 49, 'z:': 50, 't1': 51, 't1:': 52, 'r:': 53, 'tS_': 54, 'J:': 55,
+     'x': 56, 'k:': 57, 'dz': 58, 'F': 59, 'S:': 60}
+
+     feature = np.zeros(61)
+     for phoneme in phonemes:
+         feature[phoneme_feature_locations[phoneme[0]]] = 1
+
+    return feature
 
 def get_phoneme_feature(phonemes):
     phoneme_feature_locations = {'pau': 0, 'v': 1, 'O': 2, 'n': 3, 'e:': 4, 'k': 5,

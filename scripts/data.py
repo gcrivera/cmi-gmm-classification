@@ -166,9 +166,9 @@ def get_phoneme_alone_feature(phonemes):
      'j:': 48, 'd_:': 49, 'z:': 50, 't1': 51, 't1:': 52, 'r:': 53, 'tS_': 54, 'J:': 55,
      'x': 56, 'k:': 57, 'dz': 58, 'F': 59, 'S:': 60}
 
-     feature = np.zeros(61)
-     for phoneme in phonemes:
-         feature[phoneme_feature_locations[phoneme[0]]] = 1
+    feature = np.zeros(61)
+    for phoneme in phonemes:
+        feature[phoneme_feature_locations[phoneme[0]]] = 1
 
     return feature
 
